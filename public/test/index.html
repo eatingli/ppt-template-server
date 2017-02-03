@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>test</title>
+    <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js"></script>
+</head>
+
+<body>
+    <button id="test">Generate</button>
+    <a id="download"></a>
+    <iframe id="download_iframe" style="display:none;"></iframe>
+    <script type="text/javascript">
+    var orders = [];
+
+    orders.push({
+        page: 1,
+        pairs: [{
+            key: '[Title]',
+            value: 'AA'
+        }, {
+            key: '[Content]',
+            value: 'BB'
+        }]
+    });
+    orders.push({
+        page: 2,
+        pairs: [{
+            key: '[Content]',
+            value: 'CC'
+        }]
+    });
+
+    $(document).ready(function() {
+
+        $.get('/api/template', function(data) {
+            alert('template: \n' + data.files);
+        });
+
+        $('#test').click(function() {
+            $.post('/api/order/test_template.pptx', {
+                orders: orders
+            }, function(data) {
+                var key = data.key;
+                console.log('key: ', key);
+                $('#download').text('abc.pptx');
+                $('#download').attr('href', '/api/download/' + key + '/abc.pptx');
+            });
+        });
+
+    });
+    </script>
+</body>
+
+</html>
